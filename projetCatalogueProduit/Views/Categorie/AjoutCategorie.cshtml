@@ -1,0 +1,52 @@
+﻿@model projetCatalogueProduit.Models.CatCategorie
+
+@{
+    ViewData["Title"] = "AjoutCategorie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>AjoutCategorie</h1>
+
+<div>
+    <form id="formCategorie" name="formCategorie" action="" method="post">
+        @if (Model != null){
+            <input type="hidden" name="CodeCategorie" id="CodeCategorie" value="@Model.CodeCategorie" />
+        }
+        <div class="form-group">
+            <label>CATEGORIE</label>
+            <input type="text" id="LibelleCategorie" name="LibelleCategorie" class="form-control" value="@(Model!=null? Model.LibelleCategorie:"")" required />
+        </div>
+        <div class="form-group">
+            @if(Model == null)
+            {
+                <input type="submit" id="enregistrer" name="enregistrer" value="Enregistrer" class="btn btn-primary" />
+            }
+            else
+            {
+                <input type="submit" id="modifier" name="modifier" value="Enregistrer modification" class="btn btn-success" />
+                <a asp-controller="Categorie" asp-action="AjoutCategorie" class="btn btn-default btn-xs">Annuler</a>
+            }
+            
+        </div>
+    </form>
+
+    <hr />
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>CATEGORIE</th>
+                <th>DATE SAISIE</th>
+            </tr>
+            @foreach (var data in ViewBag.listeCategorie)
+            {
+                <tr>
+                    <td>@data.LibelleCategorie</td>
+                    <td>@data.DateSaisie</td>
+                    <td><a asp-controller="Categorie" asp-action="ModifierCategorie" asp-route-id="@data.CodeCategorie" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-edit"></span>Modifier</a></td>
+                    <td><a asp-controller="Categorie" asp-action="SupprimerCategorie" asp-route-id="@data.CodeCategorie" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>Supprimer</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+﻿@model projetCatalogueProduit.Models.CatProduit;
+
+@{
+    ViewData["Title"] = "AjoutProduit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>AjoutProduit</h1>
+
+<div>
+    <form id="formProduit" name="formProduit" action="" method="post" enctype="multipart/form-data">
+        <div class="row">
+            @if (Model != null){
+                <input type="hidden" id="CodeProduit" name="CodeProduit" value="@Model.CodeProduit" />
+            }
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>CATEGORIE</label>
+                    <select type="text" id="CodeCategorie" name="CodeCategorie" class="form-control">
+                        @foreach (var data in ViewBag.listeCategorie)
+                        {
+                            <option value="@data.CodeCategorie? @(Model!=null? Model.CodeCategorie==@data.CodeCategorie? "selected" :"" :"")">@data.LibelleCategorie</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>PRODUIT *</label>
+                    <input type="text" id="LibelleProduit" name="LibelleProduit" class="form-control" value="@(Model!=null? Model.LibelleProduit : "")"  required />
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>DESCRIPTION</label>
+                    <textarea id="DescriptionProduit" name="DescriptionProduit" class="form-control">@(Model!=null? Model.DescriptionProduit : "")</textarea>
+                </div>
+                <div class="form-group">
+                    <label>IMAGE PRODUIT</label>
+                    <input type="file" id="ImageProduit" name="ImageProduit" class="form-control" accept="image/*" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+
+                @if (Model == null)
+                {
+                    <input type="submit" id="enregistrer" name="enregistrer" value="Enregistrer" class="btn btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" id="modifier" name="modifier" value="Enregistrer modification" class="btn btn-success" />
+                    <a asp-controller="Produit" asp-action="AjoutProduit" class="btn btn-default btn-xs">Annuler</a>
+                }
+
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>PRODUIT</th>
+                <th>DESCRIPTION</th>
+                <th>IMAGE</th>
+                <th>CATEGORIE</th>
+                <th>DATE SAISIE</th>
+            </tr>
+            @foreach (var data in ViewBag.listeProduit)
+            {
+                <tr>
+                    <td>@data.LibelleProduit</td>
+                    <td>@data.DescriptionProduit</td>
+                    <td><img src="@data.UrlImageProduit/@data.ImageProduit" style="height:80px;width:100px;" /></td>
+                    <td>@data.CodeCategorie</td>
+                    <td>@data.DateSaisie</td>
+                    <td><a asp-controller="Produit" asp-action="ModifierProduit" asp-route-id="@data.CodeProduit" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-edit"></span>Modifier</a></td>
+                    <td><a asp-controller="Produit" asp-action="SupprimerProduit" asp-route-id="@data.CodeProduit" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>Supprimer</a></td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
